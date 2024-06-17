@@ -1,0 +1,70 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class IMC extends JFrame implements ActionListener {
+    private JTextField pesoTextField, alturaTextField, resultadoTextField;
+    private JButton calcularButton;
+
+    public IMC() {
+        // Configurar la ventana principal
+        setTitle("Calculadora de IMC");
+        setSize(300, 150);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Crear elementos de la interfaz de usuario
+        JLabel pesoLabel = new JLabel("Peso (kg):");
+        pesoTextField = new JTextField(10);
+
+        JLabel alturaLabel = new JLabel("Altura (m):");
+        alturaTextField = new JTextField(10);
+
+        calcularButton = new JButton("Calcular");
+        calcularButton.addActionListener(this);
+
+        JLabel resultadoLabel = new JLabel("IMC:");
+        resultadoTextField = new JTextField(10);
+        resultadoTextField.setEditable(false);
+
+        // Configurar el diseño de la ventana
+        setLayout(new GridLayout(4, 2));
+
+        // Agregar elementos a la ventana
+        add(pesoLabel);
+        add(pesoTextField);
+        add(alturaLabel);
+        add(alturaTextField);
+        add(calcularButton);
+        add(resultadoLabel);
+        add(resultadoTextField);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == calcularButton) {
+            calcularIMC();
+        }
+    }
+
+    private void calcularIMC() {
+        try {
+            double peso = Double.parseDouble(pesoTextField.getText());
+            double altura = Double.parseDouble(alturaTextField.getText());
+
+            double imc = peso / (altura * altura);
+
+            resultadoTextField.setText(String.format("%.2f", imc));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores válidos para peso y altura.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+           IMC calculadora = new IMC();
+            calculadora.setVisible(true);
+        });
+    }
+}
